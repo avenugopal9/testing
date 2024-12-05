@@ -17,7 +17,7 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: '25 4 * * 6'
+    
   workflow_dispatch:
 jobs:
   analyze:
