@@ -1,13 +1,18 @@
 using System;
-using System.IO;
+using System.Data.SqlClient;
 
-public class FilePathHandler
+public class SqlInjectionExample
 {
-    public void HandleFile(string filePath)
+    public void ExecuteQuery(string userInput)
     {
-        // BAD: Unvalidated input used directly in file access
-        string fullPath = Path.Combine("C:\\Files", filePath);
-        string content = File.ReadAllText(fullPath);
-        Console.WriteLine(content);
+        // BAD: Unvalidated input concatenated into a SQL query
+        string query = "SELECT * FROM Users WHERE Name = '" + userInput + "'";
+        using (SqlConnection connection = new SqlConnection("connection_string"))
+        {
+            SqlCommand command = new SqlCommand(query, connection);
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            // Process data
+        }
     }
 }
