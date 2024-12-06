@@ -1,13 +1,13 @@
 using System;
-using System.Web;
+using System.IO;
 
-public class UnvalidatedUrlHandler : IHttpHandler
+public class FilePathHandler
 {
-    public void ProcessRequest(HttpContext ctx)
+    public void HandleFile(string filePath)
     {
-        // BAD: a request parameter is incorporated without validation into a URL redirect
-        ctx.Response.Redirect(ctx.Request.QueryString["page"]);
+        // BAD: Unvalidated input used directly in file access
+        string fullPath = Path.Combine("C:\\Files", filePath);
+        string content = File.ReadAllText(fullPath);
+        Console.WriteLine(content);
     }
 }
-
-
