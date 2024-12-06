@@ -1,20 +1,13 @@
 using System;
-using System.Data.SqlClient;
+using System.Web;
 
-public class SqlInjectionExample
+public class UnvalidatedUrlHandler : IHttpHandler
 {
-    public void ExecuteQuery(string userInput)
+    public void ProcessRequest(HttpContext ctx)
     {
-        // GOOD: Parameterized query to prevent SQL injection
-        string query = "SELECT * FROM Users WHERE Name = @userInput";
-        using (SqlConnection connection = new SqlConnection("connection_string"))
-        {
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@userInput", userInput);
-            connection.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            // Process data
-        }
+        // BAD: a request parameter is incorporated without validation into a URL redirect
+        ctx.Response.Redirect(ctx.Request.QueryString["page"]);
     }
 }
+
 
